@@ -75,8 +75,8 @@ data = [
 # MAX_PRESSURE = 0.93    # [bar] v2.3
 # MAX_PRESSURE = 0.85      # [bar] v2.4
 
-MAX_PRESSURE = data
-DEFAULT_PATTERN = ptrn_v3_0      # default pattern
+MAX_PRESSURE = ptrn_v3_pres
+DEFAULT_PATTERN = data      # default pattern
 
 MAX_CTROUT = 0.50     # [10V]
 TSAMPLING = 0.001     # [sec]
