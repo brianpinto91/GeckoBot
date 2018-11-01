@@ -40,12 +40,14 @@ ptrn_v2_6 = HUI.generate_pattern(.77, 0.99, 0.97, 0.93, 0.70, 0.71, 0.0, 0.0)
 ptrn_v3_0 = HUI.generate_pattern(.63, 0.56, 0.99, 0.99, 0.55, 0.73, 0.0, 0.0)
 ptrn_v3_pres = 1
 
+ptrn_v4_0 = HUI.generate_pattern(.54, .68, .53, .76, .64, .66, 0, 0)
+
 # MAX_PRESSURE = 0.85    # [bar] v2.2
 # MAX_PRESSURE = 0.93    # [bar] v2.3
 # MAX_PRESSURE = 0.85      # [bar] v2.4
 
 MAX_PRESSURE = ptrn_v3_pres
-DEFAULT_PATTERN = ptrn_v3_0      # default pattern
+DEFAULT_PATTERN = ptrn_v4_0      # default pattern
 
 MAX_CTROUT = 0.50     # [10V]
 TSAMPLING = 0.001     # [sec]
