@@ -68,7 +68,7 @@ ptrn_v4_0_curve = [
     [p02, p12, p22, p32, p42, p52, p62, p72, False, True, True, False, t_dfx]
 ]
 
-pattern = ptrn_v4_0_straight*3 + ptrn_v4_0_curve*5 + ptrn_v4_0_straight*3
+pattern = ptrn_v4_0_straight*4 + ptrn_v4_0_curve*5
 
 
 
