@@ -98,7 +98,7 @@ def print(*args, **kwargs):
 
 
 def generate_pattern(p0, p1, p2, p3, p4, p5, p6, p7):
-    t_move = 1.
+    t_move = .8
     t_fix = .1
     t_dfx = .1
     p01 = 0.1
