@@ -278,6 +278,7 @@ class HUIThread(threading.Thread):
             return (self.ui_state)
 
         def pattern_reference():
+            self.ptrn_idx = 0
             while not mode_changed():
                 change_state_in_main_thread(MODE[3]['main_state'][fun2()])
                 if is_userpattern():
