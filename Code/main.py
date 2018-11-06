@@ -69,7 +69,7 @@ ptrn_v4_0_curve = [
 ]
 
 #pattern = ptrn_v4_0_straight*4 + ptrn_v4_0_curve*5
-pattern = ptrn_v4_0_straight
+pattern = ptrn_v4_0_straight*9 + [0, 0, 0, 0, 0, 0, 0, 0, True, True, True, True, 10]
 
 
 # MAX_PRESSURE = 0.85    # [bar] v2.2
