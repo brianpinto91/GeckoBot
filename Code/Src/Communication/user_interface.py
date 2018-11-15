@@ -11,6 +11,7 @@ import __builtin__
 import threading
 import time
 import sys
+import copy
 import Adafruit_BBIO.GPIO as GPIO
 import Adafruit_BBIO.ADC as ADC
 
@@ -306,7 +307,7 @@ class HUIThread(threading.Thread):
                         self.shared_memory.dvalve_task = dvtsk
                         self.shared_memory.ref_task = pvtsk
     
-                        self.ptrn_idx = idx
+                        self.ptrn_idx = idx+1
                         self.process_time = processtime
                         self.last_process_time = time.time()
     
@@ -354,11 +355,15 @@ class HUIThread(threading.Thread):
 n_dvalves = len(SWITCHES)
 n_pvalves = len(POTIS)
 
+#Before starting the walking pattern from 0th pose, we have to keep the previous state as end of 5th pose.
+# A single fixation of leg 2 ensures that the 5th pose is achievable initially from the start pose (user kept)
 def generate_init_pose_ref(pattern):
-    pos = pattern[5].copy
+    pattern = copy.deepcopy(pattern)
+    pos=pattern[5]
     pos[-3] = False
+    pos[-1] = 3.0
     dv_task, pv_task = {}, {}
-    local_min_process_time = 3.0
+    local_min_process_time = pos[-1]
     dpos = pos[-n_dvalves-1:-1]
     ppos = pos[:n_pvalves]
     for jdx, dp in enumerate(dpos):
