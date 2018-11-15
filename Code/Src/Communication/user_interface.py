@@ -132,6 +132,7 @@ class HUIThread(threading.Thread):
 
         self.user_pattern = False  # user defined pattern or default?
         self.ptrn_idx = 0
+        self.newStart = True
         self.last_process_time = time.time()
         self.process_time = 0
 
@@ -281,6 +282,7 @@ class HUIThread(threading.Thread):
             return (self.ui_state)
 
         def pattern_reference():
+            self.ptrn_idx = 0
             while not mode_changed():
                 change_state_in_main_thread(MODE[3]['main_state'][fun2()])
                 if is_userpattern():
@@ -288,23 +290,31 @@ class HUIThread(threading.Thread):
                     self.shared_memory.pattern = generate_pattern(*cref)
                 if (fun1() and self.last_process_time + self.process_time <
                         time.time()):
-
-                    pattern = self.shared_memory.pattern
-                    idx = self.ptrn_idx
-                    idx = idx+1 if idx < len(pattern)-1 else 0
-                    dvtsk, pvtsk, processtime = generate_pose_ref(pattern, idx)
-                    self.shared_memory.dvalve_task = dvtsk
-                    self.shared_memory.ref_task = pvtsk
-
-                    self.ptrn_idx = idx
-                    self.process_time = processtime
-                    self.last_process_time = time.time()
-
-                    # capture image?
-                    if self.camerasock:
-                        if idx % 3 == 1:
-                            self.camerasock.make_image('test'+str(self.camidx))
-                            self.camidx += 1
+                    if self.newStart:
+                        pattern = self.shared_memory.pattern
+                        dvtsk, pvtsk, processtime = generate_init_pose_ref(pattern)
+                        self.shared_memory.dvalve_task = dvtsk
+                        self.shared_memory.ref_task = pvtsk
+                        self.process_time = processtime
+                        self.last_process_time = time.time()
+                        self.newStart = False
+                    else:
+                        pattern = self.shared_memory.pattern
+                        idx = self.ptrn_idx
+                        idx = idx if idx < len(pattern) else 0
+                        dvtsk, pvtsk, processtime = generate_pose_ref(pattern, idx)
+                        self.shared_memory.dvalve_task = dvtsk
+                        self.shared_memory.ref_task = pvtsk
+    
+                        self.ptrn_idx = idx
+                        self.process_time = processtime
+                        self.last_process_time = time.time()
+    
+                        # capture image?
+                        if self.camerasock:
+                            if idx % 3 == 1:
+                                self.camerasock.make_image('test'+str(self.camidx))
+                                self.camidx += 1
 
                 time.sleep(UI_TSAMPLING)
                 set_leds()
@@ -344,7 +354,21 @@ class HUIThread(threading.Thread):
 n_dvalves = len(SWITCHES)
 n_pvalves = len(POTIS)
 
+def generate_init_pose_ref(pattern):
+    pos = pattern[5].copy
+    pos[-3] = False
+    dv_task, pv_task = {}, {}
+    local_min_process_time = 3.0
+    dpos = pos[-n_dvalves-1:-1]
+    ppos = pos[:n_pvalves]
+    for jdx, dp in enumerate(dpos):
+        dv_task[jdx] = dp
+    for kdx, pp in enumerate(ppos):
+        pv_task[kdx] = pp
 
+    return dv_task, pv_task, local_min_process_time
+    
+    
 def generate_pose_ref(pattern, idx):
     pos = pattern[idx]
     dv_task, pv_task = {}, {}
