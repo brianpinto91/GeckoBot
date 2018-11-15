@@ -103,7 +103,7 @@ def generate_pattern(p0, p1, p2, p3, p4, p5, p6, p7):
     t_boost = .4
     t_fix = .66
     t_dfx = .25
-    p_b = 1.0   
+    p_b = 0.3   
     #t_move = 3.0
     #t_fix = .66
     #t_dfx = .25
@@ -112,11 +112,11 @@ def generate_pattern(p0, p1, p2, p3, p4, p5, p6, p7):
     p41 = 0.25
     p51 = 0.25
     data = [
-        [p01, p_b, p_b, 0.0, p41, p_b, p6, 0.0, False, True, True, False, t_boost],
+        [p01, p1+p_b, p2+p_b, 0.0, p41, p5+p_b, p6, 0.0, False, True, True, False, t_boost],
         [p01, p1, p2, 0.0, p41, p5, p6, 0.0, False, True, True, False, t_move],
         [0.0, p1, p2, 0.0, p41, p5, p6, 0.0, True, True, True, True, t_fix],
         [0.0, p1, p2, 0.0, p41, p5, p6, 0.0, True, False, False, True, t_dfx],
-        [p_b, p11, 0.0, p_b, p_b, p51, 0.0, p7, True, False, False, True, t_boost],
+        [p0+p_b, p11, 0.0, p3+p_b, p4+p_b, p51, 0.0, p7, True, False, False, True, t_boost],
         [p0, p11, 0.0, p3, p4, p51, 0.0, p7, True, False, False, True, t_move],
         [p0, 0.0, 0.0, p3, p4, p51, 0.0, p7, True, True, True, True, t_fix],
         [p0, 0.0, 0.0, p3, p4, p51, 0.0, p7, False, True, True, False, t_dfx]
@@ -366,9 +366,9 @@ n_pvalves = len(POTIS)
 # A single fixation of leg 2 ensures that the 5th pose is achievable initially from the start pose (user kept)
 def generate_init_pose_ref(pattern):
     pattern = copy.deepcopy(pattern)
-    pos=pattern[5]
+    pos=pattern[7]
     pos[-3] = False
-    pos[-1] = 3.0
+    pos[-1] = 2
     dv_task, pv_task = {}, {}
     local_min_process_time = pos[-1]
     dpos = pos[-n_dvalves-1:-1]
