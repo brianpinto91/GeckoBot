@@ -423,7 +423,7 @@ class Printer(threading.Thread):
                 round(self.shared_memory.rec[i], 2),
                 round(self.shared_memory.rec_u[i], 2), angle)
             state_str = state_str + s
-	    if self.shared_memory.task_state_of_mainthread == 'PRESSURE_REFERENCE':
+	    if self.shared_memory.task_state_of_mainthread == 'PRESSURE_REFERENCE' and i<6:
 		self.dataLogger.debug("Elapsed time,{},Sensor,{},Pressure,{},PWM,{},Angle,{}".format(
 			datetime.datetime.now()-startTime,i,round(self.shared_memory.rec[i], 2),
                 round(self.shared_memory.rec_u[i], 2), angle))
