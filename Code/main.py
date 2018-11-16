@@ -4,6 +4,7 @@ from __future__ import print_function
 
 import sys
 import time
+import datetime
 import logging
 import errno
 import numpy as np
@@ -21,14 +22,25 @@ from Src.Visual.PiCamera import client
 
 logPath = "log/"
 fileName = 'testlog'
+dataFileName = 'readings.log'
 logFormatter = logging.Formatter(
     "%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
+dataLogFormat = logging.Formatter("%(message)s")
+
 rootLogger = logging.getLogger()
 rootLogger.setLevel(logging.INFO)
 
+dataLogger = logging.getLogger('sensorData')
+dataLogger.setLevel(logging.DEBUG)
+
 fileHandler = logging.FileHandler("{0}/{1}.log".format(logPath, fileName))
 fileHandler.setFormatter(logFormatter)
+
+dataFileHandler = logging.FileHandler("{0}/{1}.log".format(logPath, dataFileName))
+dataFileHandler.setFormatter(dataLogFormat)
+
 rootLogger.addHandler(fileHandler)
+dataLogger.addHandler(dataFileHandler)
 consoleHandler = logging.StreamHandler()
 consoleHandler.setFormatter(logFormatter)
 rootLogger.addHandler(consoleHandler)
@@ -394,7 +406,7 @@ def main():
     rootLogger.info('started UI Thread as daemon?: {}'.format(
             communication_thread.isDaemon()))
     if PRINTSTATE:
-        printer_thread = HUI.Printer(shared_memory)
+        printer_thread = HUI.Printer(shared_memory,dataLogger)
         printer_thread.setDaemon(True)
         printer_thread.start()
     
