@@ -10,6 +10,7 @@ from __future__ import print_function
 import __builtin__
 import threading
 import time
+import datetime
 import sys
 import copy
 import Adafruit_BBIO.GPIO as GPIO
@@ -398,12 +399,13 @@ def generate_pose_ref(pattern, idx):
 
 
 class Printer(threading.Thread):
-    def __init__(self, shared_memory):
+    def __init__(self, shared_memory,dataLogger):
         threading.Thread.__init__(self)
         self.shared_memory = shared_memory
+	self.dataLogger = dataLogger
         self.state = 'RUN'
 
-    def print_state(self):
+    def print_state(self, startTime):
         state_str = '\n\t| Ref \t| State\n'
         state_str = state_str + '-----------------------\n'
         for i in range(4):
@@ -421,12 +423,17 @@ class Printer(threading.Thread):
                 round(self.shared_memory.rec[i], 2),
                 round(self.shared_memory.rec_u[i], 2), angle)
             state_str = state_str + s
+	    if self.shared_memory.task_state_of_mainthread = 'PRESSURE_REFERENCE':
+		self.dataLogger.debug("Elapsed time,{},Sensor,{},Pressure,{},PWM,{},Angle,{}".format(
+			datetime.datetime.now()-startTime,i,round(self.shared_memory.rec[i], 2),
+                round(self.shared_memory.rec_u[i], 2), angle)
         print(state_str)
         time.sleep(.1)
 
     def run(self):
+	startTime = datetime.datetime.now()		
         while self.state is not 'EXIT':
-            self.print_state()
+            self.print_state(startTime)
 
     def kill(self):
         self.state = 'EXIT'
