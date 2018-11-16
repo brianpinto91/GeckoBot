@@ -27,7 +27,7 @@ logFormatter = logging.Formatter(
     "%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
 dataLogFormat = logging.Formatter("%(message)s")
 
-rootLogger = logging.getLogger()
+rootLogger = logging.getLogger('mainLog')
 rootLogger.setLevel(logging.INFO)
 
 dataLogger = logging.getLogger('sensorData')
