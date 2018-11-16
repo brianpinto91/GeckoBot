@@ -229,6 +229,11 @@ def main():
         for name in IMU:
             try:
                 shared_memory.rec_IMU[name] = IMU[name].get_acceleration()
+                idx0, idx1 = CHANNELset[name]['IMUs']
+                rot_angle = CHANNELset[name]['IMUrot']
+                acc0 = shared_memory.rec_IMU[idx0]
+                acc1 = shared_memory.rec_IMU[idx1]
+                shared_memory.rec_angle[name]=round(IMUcalc.calc_angle(acc0, acc1, rot_angle),2)
             except IOError as e:
                 if e.errno == errno.EREMOTEIO:
                     rootLogger.exception(
@@ -345,6 +350,8 @@ def main():
         while shared_memory.task_state_of_mainthread == 'PRESSURE_REFERENCE':
             # read
             shared_memory = read_sens(shared_memory)
+            if IMU:
+                shared_memory = read_imu(shared_memory)
             # write
             for name in PValve:
                 ref = shared_memory.ref_task[name]
@@ -381,6 +388,8 @@ def main():
 
         while shared_memory.task_state_of_mainthread == 'PAUSE':
             shared_memory = read_sens(shared_memory)
+            if IMU:
+                shared_memory = read_imu(shared_memory)
             time.sleep(shared_memory.sampling_time)
             new_state = shared_memory.task_state_of_mainthread
         return (new_state, shared_memory)
