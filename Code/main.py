@@ -22,7 +22,7 @@ from Src.Visual.PiCamera import client
 
 logPath = "log/"
 fileName = 'testlog'
-dataFileName = 'readings.log'
+dataFileName = 'readings'
 logFormatter = logging.Formatter(
     "%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
 dataLogFormat = logging.Formatter("%(message)s")
