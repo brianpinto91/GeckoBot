@@ -226,8 +226,8 @@ def main():
         return shared_memory
 
     def read_imu(shared_memory):
-            try:
-                for name in IMU:
+    	try:
+    		for name in IMU:
                     shared_memory.rec_IMU[name] = IMU[name].get_acceleration()
                 for name in IMU:
                     idx0, idx1 = CHANNELset[name]['IMUs']
@@ -235,7 +235,7 @@ def main():
                     acc0 = shared_memory.rec_IMU[idx0]
                     acc1 = shared_memory.rec_IMU[idx1]
                     shared_memory.rec_angle[name]=round(IMUcalc.calc_angle(acc0, acc1, rot_angle),2)
-            except IOError as e:
+    	except IOError as e:
                 if e.errno == errno.EREMOTEIO:
                     rootLogger.exception(
                         'cant read imu device.' +
@@ -244,7 +244,7 @@ def main():
                     rootLogger.exception('Sensor [{}]'.format(name))
                     rootLogger.error(e, exc_info=True)
                     raise e
-        return shared_memory
+	return shared_memory
 
     """ ---------------- HELP FUNCTIONS ------------------------- """
 
