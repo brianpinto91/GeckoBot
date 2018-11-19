@@ -98,26 +98,28 @@ def read_switches():
 def print(*args, **kwargs):
     __builtin__.print(colored('Comm_Thread: ', 'red'), *args, **kwargs)
 
+def boost_pressure(p):
+    return 0.0131+0.4583*p+1.4503*pow(p,2)
 
 def generate_pattern(p0, p1, p2, p3, p4, p5, p6, p7):
-    t_move = 1.0
+    t_move = 1
     t_boost = .5
     t_fix = .2
     t_dfx = .1
-    p_b = 0.3   
+    #p_b = 0.3   
     #t_move = 3.0
     #t_fix = .66
     #t_dfx = .25
-    p01 = 0.25
-    p11 = 0.25
-    p41 = 0.25
-    p51 = 0.25
+    p01 = 0.0
+    p11 = 0.0
+    p41 = 0.0
+    p51 = 0.0
     data = [
-        [p01, p1+p_b, p2+p_b+0.1, 0.0, p41, p5+p_b, p6, 0.0, False, True, True, False, t_boost],
-        [p01, p1, p2+0.1, 0.0, p41, p5, p6, 0.0, False, True, True, False, t_move],
-        [0.0, p1, p2+0.1, 0.0, p41, p5, p6, 0.0, True, True, True, True, t_fix],
-        [0.0, p1, p2+0.1, 0.0, p41, p5, p6, 0.0, True, False, False, True, t_dfx],
-        [p0+p_b, p11, 0.0, p3+p_b, p4+p_b, p51, 0.0, p7, True, False, False, True, t_boost],
+        [p01, boost_pressure(p1), boost_pressure(p2), 0.0, p41, boost_pressure(p5), p6, 0.0, False, True, True, False, t_boost],
+        [p01, p1, p2, 0.0, p41, p5, p6, 0.0, False, True, True, False, t_move],
+        [0.0, p1, p2, 0.0, p41, p5, p6, 0.0, True, True, True, True, t_fix],
+        [0.0, p1, p2, 0.0, p41, p5, p6, 0.0, True, False, False, True, t_dfx],
+        [boost_pressure(p0), p11, 0.0, boost_pressure(p3), boost_pressure(p4), p51, 0.0, p7, True, False, False, True, t_boost],
         [p0, p11, 0.0, p3, p4, p51, 0.0, p7, True, False, False, True, t_move],
         [p0, 0.0, 0.0, p3, p4, p51, 0.0, p7, True, True, True, True, t_fix],
         [p0, 0.0, 0.0, p3, p4, p51, 0.0, p7, False, True, True, False, t_dfx]
@@ -424,8 +426,8 @@ class Printer(threading.Thread):
                 round(self.shared_memory.rec_u[i], 2), angle)
             state_str = state_str + s
 	    if self.shared_memory.task_state_of_mainthread == 'PRESSURE_REFERENCE' and i<6:
-		self.dataLogger.debug("Elapsed time,{},Sensor,{},Pressure,{},PWM,{},Angle,{}".format(
-			datetime.datetime.now()-startTime,i,round(self.shared_memory.rec[i], 2),
+		self.dataLogger.debug("Elapsed time,{},Sensor,{},Pref,{},Pressure,{},PWM,{},Angle,{}".format(
+			datetime.datetime.now()-startTime,i,self.shared_memory.ref_task[i],round(self.shared_memory.rec[i], 2),
                 round(self.shared_memory.rec_u[i], 2), angle))
         print(state_str)
         time.sleep(.1)
