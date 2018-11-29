@@ -102,7 +102,7 @@ def boost_pressure(p):
     return 0.0131+0.4583*p+1.4503*pow(p,2)
 
 def generate_pattern(p0, p1, p2, p3, p4, p5, p6, p7):
-    t_move = 2.5
+    t_move = 1.0
     t_boost = .5
     t_fix = .2
     t_dfx = 0.1
