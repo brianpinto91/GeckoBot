@@ -68,7 +68,8 @@ ptrn_v2_6 = HUI.generate_pattern(.77, 0.99, 0.97, 0.93, 0.70, 0.71, 0.0, 0.0)
 #ptrn_v3_0 = HUI.generate_pattern(.63, 0.56, 0.99, 0.99, 0.55, 0.73, 0.0, 0.0)
 ptrn_v3_0 = HUI.generate_pattern(.68, 0.59, 0.99, 0.99, 0.63, 0.74, 0.0, 0.0)
 ptrn_v3_pres = 1
-
+#angle reference based pattern. 1.0 corressponds to 90 deg. Any other angle can be passed as a fraction of 1.0
+ANGLE_PATTERN = HUI.generate_pattern(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0) 
 # MAX_PRESSURE = 0.85    # [bar] v2.2
 # MAX_PRESSURE = 0.93    # [bar] v2.3
 # MAX_PRESSURE = 0.85      # [bar] v2.4
@@ -202,7 +203,7 @@ def main():
             self.pattern = DEFAULT_PATTERN
             self.ptrndic = {'default': DEFAULT_PATTERN,
                             'usr_ptrn': HUI.generate_pattern(
-                                0, 0, 0, 0, 0, 0, 0, 0)}
+                                0, 0, 0, 0, 0, 0, 0, 0),'angle': ANGLE_PATTERN}
 
     rootLogger.info('Initialize Hardware ...')
     PSens, PValve, DValve, IMU, Ctr, ImuCtr = init_channels()
