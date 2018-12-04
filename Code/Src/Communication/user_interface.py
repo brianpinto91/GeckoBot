@@ -222,12 +222,8 @@ class HUIThread(threading.Thread):
             if all_potis_zero():
                 if self.user_pattern:
                     self.user_pattern = False
-		    if self.shared_memory.task_state_of_mainthread == 'ANGLE_REFERENCE':
-                    	self.shared_memory.pattern = \
-                        	self.shared_memory.ptrndic['default']
-		    else:
-			self.shared_memory.pattern = \
-				self.shared_memory.ptrndic['angle']
+		    self.shared_memory.pattern = \
+				self.shared_memory.ptrndic['default']
                     self.rootLogger.info('user_pattern was turned False')
             else:
                 if not self.user_pattern:
@@ -304,6 +300,9 @@ class HUIThread(threading.Thread):
                 if is_userpattern():
                     cref = read_potis().values()
                     self.shared_memory.pattern = generate_pattern(*cref)
+		elif self.shared_memory.task_state_of_mainthread == 'ANGLE_REFERENCE':
+                    	self.shared_memory.pattern = \
+                        	self.shared_memory.ptrndic['angle']	
                 if (fun1() and self.last_process_time + self.process_time <
                         time.time()):
                     if self.newStart:
