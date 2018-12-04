@@ -231,12 +231,12 @@ def main():
     	try:
     		for name in IMU:
                     shared_memory.rec_IMU[name] = IMU[name].get_acceleration()
-                for name in IMU:
-                    idx0, idx1 = CHANNELset[name]['IMUs']
-                    rot_angle = CHANNELset[name]['IMUrot']
-                    acc0 = shared_memory.rec_IMU[idx0]
-                    acc1 = shared_memory.rec_IMU[idx1]
-                    shared_memory.rec_angle[name]=round(IMUcalc.calc_angle(acc0, acc1, rot_angle),2)
+                #for name in IMU:
+                 #   idx0, idx1 = CHANNELset[name]['IMUs']
+                  #  rot_angle = CHANNELset[name]['IMUrot']
+                   # acc0 = shared_memory.rec_IMU[idx0]
+                    #acc1 = shared_memory.rec_IMU[idx1]
+                    #shared_memory.rec_angle[name]=round(IMUcalc.calc_angle(acc0, acc1, rot_angle),2)
     	except IOError as e:
                 if e.errno == errno.EREMOTEIO:
                     rootLogger.exception(
