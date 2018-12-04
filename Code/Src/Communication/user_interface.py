@@ -411,29 +411,29 @@ class Printer(threading.Thread):
         self.state = 'RUN'
 
     def print_state(self, startTime):
-       # state_str = '\n\t| Ref \t| State\n'
-       # state_str = state_str + '-----------------------\n'
-        #for i in range(4):
-           # s = '{}\t| {}\t| {}\n'.format(
-           #     i, True if GPIO.input(SWITCHES[i]) else False,
-            #    self.shared_memory.dvalve_task[i])
-            #state_str = state_str + s
-        #state_str = state_str + '\n\t| Ref \t| p \t| PWM \t| Angle \n'
-        #state_str = state_str + '-----------------------------------------\n'
+        state_str = '\n\t| Ref \t| State\n'
+        state_str = state_str + '-----------------------\n'
+        for i in range(4):
+           s = '{}\t| {}\t| {}\n'.format(
+                i, True if GPIO.input(SWITCHES[i]) else False,
+          	    self.shared_memory.dvalve_task[i])
+           state_str = state_str + s
+        state_str = state_str + '\n\t| Ref \t| p \t| PWM \t| Angle \n'
+        state_str = state_str + '-----------------------------------------\n'
         for i in range(8):
             rec_angle = self.shared_memory.rec_angle
             angle = round(rec_angle[i], 2) if rec_angle[i] else None
-           # s = '{}\t| {}\t| {}\t| {}\t| {}\n'.format(
-            #    i, self.shared_memory.ref_task[i], 
-            #    round(self.shared_memory.rec[i], 2),
-             #   round(self.shared_memory.rec_u[i], 2), angle)
-             #state_str = state_str + s
-	    if self.shared_memory.task_state_of_mainthread == 'PRESSURE_REFERENCE' and i<6:
-		self.dataLogger.debug("Elapsed time,{},Sensor,{},Pref,{},Pressure,{},PWM,{},Angle,{}".format(
-			datetime.datetime.now()-startTime,i,self.shared_memory.ref_task[i],round(self.shared_memory.rec[i], 2),
-                round(self.shared_memory.rec_u[i], 2), angle))
-        #print(state_str)
-        time.sleep(.01)
+            s = '{}\t| {}\t| {}\t| {}\t| {}\n'.format(
+                i, self.shared_memory.ref_task[i], 
+                round(self.shared_memory.rec[i], 2),
+                round(self.shared_memory.rec_u[i], 2), angle)
+            state_str = state_str + s
+	    #if self.shared_memory.task_state_of_mainthread == 'PRESSURE_REFERENCE' and i<6:
+		#self.dataLogger.debug("Elapsed time,{},Sensor,{},Pref,{},Pressure,{},PWM,{},Angle,{}".format(
+		#	datetime.datetime.now()-startTime,i,self.shared_memory.ref_task[i],round(self.shared_memory.rec[i], 2),
+                #round(self.shared_memory.rec_u[i], 2), angle))
+        print(state_str)
+        time.sleep(.1)
 
     def run(self):
 	startTime = datetime.datetime.now()		
