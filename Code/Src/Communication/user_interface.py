@@ -102,9 +102,9 @@ def boost_pressure(p):
     return 0.0131+0.4583*p+1.4503*pow(p,2)
 
 def generate_pattern(p0, p1, p2, p3, p4, p5, p6, p7):  
-    t_move = 3.0
-    t_fix = .66
-    t_dfx = .25
+    t_move = 3.7
+    t_fix = .2
+    t_dfx = .1
     p01 = 0.0
     p11 = 0.0
     p41 = 0.0
@@ -409,10 +409,10 @@ class Printer(threading.Thread):
                 round(self.shared_memory.rec[i], 2),
                 round(self.shared_memory.rec_u[i], 2), angle)
             state_str = state_str + s
-	    if self.shared_memory.task_state_of_mainthread == 'PRESSURE_REFERENCE' and i<6:
-		self.dataLogger.debug("Elapsed time,{},Sensor,{},Pref,{},Pressure,{},PWM,{},Angle,{}".format(
-			datetime.datetime.now()-startTime,i,self.shared_memory.ref_task[i],round(self.shared_memory.rec[i], 2),
-                round(self.shared_memory.rec_u[i], 2), angle))
+	    #if self.shared_memory.task_state_of_mainthread == 'PRESSURE_REFERENCE' and i<6:
+		#self.dataLogger.debug("Elapsed time,{},Sensor,{},Pref,{},Pressure,{},PWM,{},Angle,{}".format(
+		#	datetime.datetime.now()-startTime,i,self.shared_memory.ref_task[i],round(self.shared_memory.rec[i], 2),
+                #round(self.shared_memory.rec_u[i], 2), angle))
         print(state_str)
         time.sleep(.1)
 
