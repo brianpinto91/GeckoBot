@@ -1,4 +1,4 @@
-ä# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
 Created on Wed Aug 22 15:45:16 2018
 
@@ -102,24 +102,24 @@ def boost_pressure(p):
     return 0.0131+0.4583*p+1.4503*pow(p,2)
 
 def generate_pattern(p0, p1, p2, p3, p4, p5, p6, p7):
-    t_move = 3.0
-    #t_boost = .5
+    t_move = 0.5
+    t_boost = .5
     t_fix = .2
     t_dfx = 0.1
     #p_b = 0.3   
     #t_move = 3.0
     #t_fix = .66
     #t_dfx = .25
-    p01 = 0.25
-    p11 = 0.25
-    p41 = 0.25
-    p51 = 0.25
+    p01 = 0
+    p11 = 0
+    p41 = 0
+    p51 = 0
     data = [
-        #[p01, boost_pressure(p1), boost_pressure(p2), 0.0, p41, boost_pressure(p5), p6, 0.0, False, True, True, False, t_boost],
+        [p01, boost_pressure(p1), boost_pressure(p2), 0.0, p41, boost_pressure(p5), p6, 0.0, False, True, True, False, t_boost],
         [p01, p1, p2, 0.0, p41, p5, p6, 0.0, False, True, True, False, t_move],
         [0.0, p1, p2, 0.0, p41, p5, p6, 0.0, True, True, True, True, t_fix],
         [0.0, p1, p2, 0.0, p41, p5, p6, 0.0, True, False, False, True, t_dfx],
-        #[boost_pressure(p0), p11, 0.0, boost_pressure(p3), boost_pressure(p4), p51, 0.0, p7, True, False, False, True, t_boost],
+        [boost_pressure(p0), p11, 0.0, boost_pressure(p3), boost_pressure(p4), p51, 0.0, p7, True, False, False, True, t_boost],
         [p0, p11, 0.0, p3, p4, p51, 0.0, p7, True, False, False, True, t_move],
         [p0, 0.0, 0.0, p3, p4, p51, 0.0, p7, True, True, True, True, t_fix],
         [p0, 0.0, 0.0, p3, p4, p51, 0.0, p7, False, True, True, False, t_dfx]
@@ -294,7 +294,7 @@ class HUIThread(threading.Thread):
 
         def pattern_reference():
             self.ptrn_idx = 0
-	    self.newStart = False
+	    #self.newStart = False
             while not mode_changed():
                 change_state_in_main_thread(MODE[3]['main_state'][fun2()])
                 if is_userpattern():
@@ -324,7 +324,7 @@ class HUIThread(threading.Thread):
     
                         # capture image?
                         if self.camerasock:
-                            if idx % 3 == 1:
+                            if idx % 4 == 2:
                                 self.camerasock.make_image('test'+str(self.camidx))
                                 self.camidx += 1
 
@@ -370,9 +370,9 @@ n_pvalves = len(POTIS)
 # A single fixation of leg 2 ensures that the 5th pose is achievable initially from the start pose (user kept)
 def generate_init_pose_ref(pattern):
     pattern = copy.deepcopy(pattern)
-    pos=pattern[5]
+    pos=pattern[7]
     pos[-3] = False
-    pos[-1] = 2
+    pos[-1] = 1.5
     dv_task, pv_task = {}, {}
     local_min_process_time = pos[-1]
     dpos = pos[-n_dvalves-1:-1]
