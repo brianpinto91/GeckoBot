@@ -295,6 +295,10 @@ class HUIThread(threading.Thread):
         def pattern_reference():
             self.ptrn_idx = 0
 	    #self.newStart = False
+	    # capture video?
+            if self.camerasock:          
+                self.camerasock.make_video('test'+str(self.camidx))
+                self.camidx += 1
             while not mode_changed():
                 change_state_in_main_thread(MODE[3]['main_state'][fun2()])
                 if is_userpattern():
@@ -322,11 +326,7 @@ class HUIThread(threading.Thread):
                         self.process_time = processtime
                         self.last_process_time = time.time()
     
-                        # capture image?
-                        if self.camerasock:
-                            if idx % 4 == 2:
-                                self.camerasock.make_image('test'+str(self.camidx))
-                                self.camidx += 1
+                       
 
                 time.sleep(UI_TSAMPLING)
                 set_leds()
