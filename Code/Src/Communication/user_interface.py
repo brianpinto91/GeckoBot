@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+ä# -*- coding: utf-8 -*-
 """
 Created on Wed Aug 22 15:45:16 2018
 
@@ -102,8 +102,8 @@ def boost_pressure(p):
     return 0.0131+0.4583*p+1.4503*pow(p,2)
 
 def generate_pattern(p0, p1, p2, p3, p4, p5, p6, p7):
-    t_move = 3.7
-    t_boost = .5
+    t_move = 3.0
+    #t_boost = .5
     t_fix = .2
     t_dfx = 0.1
     #p_b = 0.3   
@@ -408,8 +408,8 @@ class Printer(threading.Thread):
         self.state = 'RUN'
 
     def print_state(self, startTime):
-       state_str = '\n\t| Ref \t| State\n'
-       state_str = state_str + '-----------------------\n'
+        state_str = '\n\t| Ref \t| State\n'
+        state_str = state_str + '-----------------------\n'
         for i in range(4):
             s = '{}\t| {}\t| {}\n'.format(
                 i, True if GPIO.input(SWITCHES[i]) else False,
