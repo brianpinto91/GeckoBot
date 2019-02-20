@@ -103,17 +103,9 @@ def boost_pressure(p):
 
 def generate_pattern(p0, p1, p2, p3, p4, p5, p6, p7):
     t_move = 0.5
-    t_boost = .5
-    t_fix = .2
+    t_boost = 0.5
+    t_fix = 0.2
     t_dfx = 0.1
-    #p_b = 0.3   
-    #t_move = 3.0
-    #t_fix = .66
-    #t_dfx = .25
-    p01 = 0
-    p11 = 0
-    p41 = 0
-    p51 = 0
     data = [
         [p01, boost_pressure(p1), boost_pressure(p2), 0.0, p41, boost_pressure(p5), p6, 0.0, False, True, True, False, t_boost],
         [p01, p1, p2, 0.0, p41, p5, p6, 0.0, False, True, True, False, t_move],
@@ -143,7 +135,7 @@ class HUIThread(threading.Thread):
 
         self.user_pattern = False  # user defined pattern or default?
         self.ptrn_idx = 0
-        self.newStart = True
+        self.newStart = False
         self.last_process_time = time.time()
         self.process_time = 0
 
